@@ -33,3 +33,12 @@ let find (haystack : string array) (needle: string) : int =
       else bin_search (mid + 1) e in
   bin_search 0 ((Array.length haystack) - 1)
 ;;
+
+let another_minindex arr = 
+  let (i, _) = 
+    Array.fold_left 
+    (fun (i1,x1) (i2,x2) -> if x1 < x2 then (i1,x1) else (i2, x2)) 
+    (-1, max_int)
+    (Array.mapi (fun i x -> (i, x)) arr) in
+  i
+;;
