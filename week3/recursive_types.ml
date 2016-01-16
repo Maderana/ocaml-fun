@@ -47,7 +47,9 @@ let split (xs: int list) : queue =
 ;;
 
 let dequeue ((front, back): queue) : (int * queue) =
-  (List.hd front, (List.tl front, back))
+  match (front,back) with
+  | ([], back) -> (0, ([], List.tl back))
+  | (front, back) -> (List.hd front, (List.tl front, back))
 ;;
 
 let rec mem x l =
