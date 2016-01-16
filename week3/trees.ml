@@ -100,5 +100,10 @@ let lookup (t: trie) (key: string) : int option =
   loop t 0 None
 ;;
 
+(* TODO: Not yet complete *)
+let insert (t: trie) (key: string) (v: int) : trie =
+  t
+;;
 
+let new_trie : trie = insert example "tee" 10;;
 
