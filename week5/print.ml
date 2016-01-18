@@ -1,14 +1,11 @@
 let print_with_newline x =
-  let _ = print_int x in 
-  print_newline ()
+  begin print_int x; print_newline (); end
 ;;
 
 let rec print_int_list = function
   | [] -> print_newline ()
   | [x] -> print_int x
-  | x :: xs -> 
-    let _ = print_with_newline x in
-    print_int_list xs
+  | x :: xs -> begin print_with_newline x; print_int_list xs; end
 ;;
 
 print_int_list [1;2;3]
@@ -16,10 +13,7 @@ print_int_list [1;2;3]
 let rec print_list (print: 'a -> unit) l = function
   | [] -> print_newline () 
   | [x] -> print x
-  | x :: xs -> 
-    let _ = print x in
-    let _ = print_endline "" in
-    print_int_list xs
+  | x :: xs -> begin print x; print_endline ""; print_int_list xs; end
 ;;
 
 
@@ -28,7 +22,7 @@ let print_every_other k l =
     | [] -> print_newline ()
     | x :: xs -> 
       match i mod k with 
-      | 0 -> let _ = print_with_newline x in aux (i + 1) xs
+      | 0 -> begin print_with_newline x; aux (i + 1) xs end
       | _ -> aux (i + 1) xs 
   in
   aux 1 l
