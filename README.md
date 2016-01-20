@@ -1,4 +1,4 @@
-My *noob* attempts at the exercises in the OCaml [course](https://www.france-universite-numerique-mooc.fr/courses/parisdiderot/56002/session01/about).
+My attempts at the exercises in the OCaml [course](https://www.france-universite-numerique-mooc.fr/courses/parisdiderot/56002/session01/about).
 
 Disclaimer:
 
