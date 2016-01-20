@@ -28,5 +28,26 @@ let rle l =
   else List.rev (aux [] (One (List.hd l)) (List.tl l))
 ;;
 
+let compute_rle l = 
+  let results = List.fold_left 
+    (fun acc x -> 
+       if acc = [] then [One x]
+       else 
+         match List.hd acc with
+         | One v -> 
+           if v = x 
+           then (Many (x, 2)) :: List.tl acc
+           else (One x) :: List.hd acc :: List.tl acc
+         | Many (v, c) ->
+           if v = x
+           then (Many (x, c+1)) :: List.tl acc
+           else (One x) :: List.hd acc :: List.tl acc) 
+    [] 
+    l
+  in 
+  List.rev results
+;;
+
 let example = [1; 1; 1; 3; 4; 1; 1];;
 assert ([Many (1, 3); One 3; One 4; Many (1, 2)] = (rle example));;
+assert ([Many (1, 3); One 3; One 4; Many (1, 2)] = (compute_rle example));;
