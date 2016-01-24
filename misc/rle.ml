@@ -29,12 +29,12 @@ let rle l =
 ;;
 
 let compute_rle l = 
-  let results = List.fold_left 
-    (fun acc x -> 
+  let results = List.fold_right
+    (fun x acc ->
        if acc = [] then [One x]
-       else 
+       else
          match List.hd acc with
-         | One v -> 
+         | One v ->
            if v = x 
            then (Many (x, 2)) :: List.tl acc
            else (One x) :: List.hd acc :: List.tl acc
@@ -42,10 +42,10 @@ let compute_rle l =
            if v = x
            then (Many (x, c+1)) :: List.tl acc
            else (One x) :: List.hd acc :: List.tl acc) 
-    [] 
     l
+    []
   in 
-  List.rev results
+  results
 ;;
 
 let example = [1; 1; 1; 3; 4; 1; 1];;
