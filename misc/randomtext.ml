@@ -1,4 +1,6 @@
 #load "str.cma";;
+open Hashtbl;;
+
 type ltable = (string * string list) list;;
 
 let words s = Str.split (Str.regexp "[^a-zA-Z0-9]+") s;;
@@ -28,11 +30,34 @@ let build_ltable ws =
   aux [("START", [List.hd ws])] ws
 ;;
 
+(* returns the hashtable *)
+let build_hashtable ws = 
+  let rec aux ht = function
+    | [] -> ()
+    | x :: [] -> 
+      (try 
+        let s = Hashtbl.find ht x in
+        Hashtbl.replace ht x ("STOP" :: s)
+       with 
+       | Not_found -> Hashtbl.add ht x ["STOP"])
+    | x :: y :: xs ->
+      try 
+        let s = Hashtbl.find ht x in
+        Hashtbl.replace ht x (y :: s); 
+        aux ht (y :: xs);
+      with
+      | Not_found -> Hashtbl.add ht x [y]; aux ht (y :: xs);
+  in
+  let ht = Hashtbl.create (List.length ws) in
+  Hashtbl.add ht "START" [List.hd ws];
+  aux ht ws;
+  ht
+;;
 
-let table = build_ltable (words text);;
+let table = build_hashtable (words text);;
 
 let next_in_ltable table w =
-  let ws = List.assoc w table in
+  let ws = Hashtbl.find table w in
   List.nth ws (Random.int (List.length ws))
 ;;
 
