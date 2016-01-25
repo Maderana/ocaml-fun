@@ -4,9 +4,10 @@
 %token <int> LITERAL
 %token <int> VARIABLE
 
+%left SEP
+%left EQUALS 
 %left PLUS MINUS
 %left TIMES DIVIDE
-%left EQUALS SEP
 
 %start expr
 %type <Ast.expr> expr

@@ -11,7 +11,7 @@ type expr =
 (* 4 * 10 + 100 *)
 let example = Binop(Binop (Lit 4, Mul, Lit 10), Add, Lit 100);;
 
-(* b = 4, b + 10 *)
+(* b = 4; b + 10 *)
 let example2 = Seq(Asn(1, Lit 4), Binop (Var 1, Add, Lit 10));;
 
 (* a = 10, b = 14, a + b * 10 *)
@@ -43,8 +43,9 @@ let rec eval table = function
     | Div -> l / r)
   | Var v -> table.(v)
   | Asn (i, e) -> 
-    Array.set table i (eval table e);
-    eval table e
+    let res = eval table e in
+    Array.set table i res;
+    res
   | Seq (e1, e2) -> 
     let _ = eval table e1 in
     eval table e2

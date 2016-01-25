@@ -3,14 +3,14 @@
 # 4 "scanner.ml"
 let __ocaml_lex_tables = {
   Lexing.lex_base = 
-   "\000\000\246\255\247\255\014\000\249\255\250\255\251\255\252\255\
-    \253\255\254\255\255\255";
+   "\000\000\245\255\246\255\014\000\001\000\250\255\251\255\252\255\
+    \253\255\254\255\255\255\249\255";
   Lexing.lex_backtrk = 
-   "\255\255\255\255\255\255\007\000\255\255\255\255\255\255\255\255\
-    \255\255\255\255\255\255";
+   "\255\255\255\255\255\255\008\000\007\000\255\255\255\255\255\255\
+    \255\255\255\255\255\255\255\255";
   Lexing.lex_default = 
-   "\255\255\000\000\000\000\255\255\000\000\000\000\000\000\000\000\
-    \000\000\000\000\000\000";
+   "\255\255\000\000\000\000\255\255\255\255\000\000\000\000\000\000\
+    \000\000\000\000\000\000\000\000";
   Lexing.lex_trans = 
    "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\
     \000\000\010\000\010\000\000\000\000\000\010\000\000\000\000\000\
@@ -19,7 +19,7 @@ let __ocaml_lex_tables = {
     \010\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\
     \000\000\000\000\007\000\009\000\000\000\008\000\000\000\006\000\
     \003\000\003\000\003\000\003\000\003\000\003\000\003\000\003\000\
-    \003\000\003\000\000\000\004\000\000\000\005\000\003\000\003\000\
+    \003\000\003\000\000\000\004\000\011\000\005\000\003\000\003\000\
     \003\000\003\000\003\000\003\000\003\000\003\000\003\000\003\000\
     \000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\
     \000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\
@@ -54,7 +54,7 @@ let __ocaml_lex_tables = {
     \000\000\255\255\255\255\255\255\255\255\255\255\255\255\255\255\
     \255\255\255\255\000\000\000\000\255\255\000\000\255\255\000\000\
     \000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\
-    \000\000\000\000\255\255\000\000\255\255\000\000\003\000\003\000\
+    \000\000\000\000\255\255\000\000\004\000\000\000\003\000\003\000\
     \003\000\003\000\003\000\003\000\003\000\003\000\003\000\003\000\
     \255\255\255\255\255\255\255\255\255\255\255\255\255\255\255\255\
     \255\255\255\255\255\255\255\255\255\255\255\255\255\255\255\255\
@@ -100,64 +100,69 @@ let rec token lexbuf =
 and __ocaml_lex_token_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 10 "scanner.mll"
-         ( token lexbuf )
+# 11 "scanner.mll"
+                    ( token lexbuf )
 # 106 "scanner.ml"
 
   | 1 ->
-# 11 "scanner.mll"
-          ( PLUS )
+# 12 "scanner.mll"
+                    ( PLUS )
 # 111 "scanner.ml"
 
   | 2 ->
-# 12 "scanner.mll"
-          ( MINUS )
+# 13 "scanner.mll"
+                    ( MINUS )
 # 116 "scanner.ml"
 
   | 3 ->
-# 13 "scanner.mll"
-          ( TIMES )
+# 14 "scanner.mll"
+                    ( TIMES )
 # 121 "scanner.ml"
 
   | 4 ->
-# 14 "scanner.mll"
-          ( DIVIDE )
+# 15 "scanner.mll"
+                    ( DIVIDE )
 # 126 "scanner.ml"
 
   | 5 ->
-# 15 "scanner.mll"
-          ( EQUALS )
+# 16 "scanner.mll"
+                    ( EQUALS )
 # 131 "scanner.ml"
 
   | 6 ->
-# 16 "scanner.mll"
-          ( SEP )
+# 17 "scanner.mll"
+                    ( EOF)
 # 136 "scanner.ml"
 
   | 7 ->
-let
-# 17 "scanner.mll"
-                lit
-# 142 "scanner.ml"
-= Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 17 "scanner.mll"
-                    ( LITERAL(int_of_string lit) )
-# 146 "scanner.ml"
+# 18 "scanner.mll"
+                    ( SEP )
+# 141 "scanner.ml"
 
   | 8 ->
 let
-# 18 "scanner.mll"
+# 19 "scanner.mll"
                 lit
-# 152 "scanner.ml"
-= Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
-# 18 "scanner.mll"
-                    ( VARIABLE(int_of_char lit - 97) )
-# 156 "scanner.ml"
+# 147 "scanner.ml"
+= Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
+# 19 "scanner.mll"
+                    ( LITERAL(int_of_string lit) )
+# 151 "scanner.ml"
 
   | 9 ->
-# 19 "scanner.mll"
-          ( EOF )
+let
+# 20 "scanner.mll"
+                lit
+# 157 "scanner.ml"
+= Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
+# 20 "scanner.mll"
+                    ( VARIABLE(int_of_char lit - 97) )
 # 161 "scanner.ml"
+
+  | 10 ->
+# 21 "scanner.mll"
+                    ( EOF )
+# 166 "scanner.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf; 
       __ocaml_lex_token_rec lexbuf __ocaml_lex_state
