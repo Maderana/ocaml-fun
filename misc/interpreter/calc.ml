@@ -1,5 +1,11 @@
 open Ast
 
+let rec pow x = function
+  | 0 -> 1
+  | 1 -> x
+  | _ as e -> x * pow x (e - 1)
+;;
+
 let rec eval table = function
   | Lit x -> x
   | Binop (e1, op, e2) ->
@@ -9,7 +15,8 @@ let rec eval table = function
     | Add -> l + r
     | Sub -> l - r
     | Mul -> l * r
-    | Div -> l / r)
+    | Div -> l / r
+    | Pow -> pow l r)
   | Var v -> table.(v)
   | Asn (i, e) -> 
     Array.set table i (eval table e);

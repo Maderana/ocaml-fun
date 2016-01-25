@@ -14,6 +14,7 @@ rule token =
     | '*'           { TIMES }
     | '/'           { DIVIDE }
     | '='           { EQUALS }
+    | '^'           { POWER }
     | break         { EOF}
     | ';'           { SEP }
     | digits as lit { LITERAL(int_of_string lit) }

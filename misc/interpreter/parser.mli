@@ -6,6 +6,7 @@ type token =
   | EOF
   | EQUALS
   | SEP
+  | POWER
   | LITERAL of (int)
   | VARIABLE of (int)
 

@@ -1,4 +1,4 @@
-type operator = Add | Sub | Mul | Div;;
+type operator = Add | Sub | Mul | Div | Pow;;
 
 type expr =
   | Binop of expr * operator * expr
