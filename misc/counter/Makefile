@@ -1,0 +1,2 @@
+all:
+	corebuild freq.byte
