@@ -17,7 +17,6 @@ let text = "I am a man and my dog is a good dog and a good dog makes a good man"
 Random.init 123;;
 
 (* using association lists *)
-
 let build_ltable ws = 
   let rec aux t = function
     | [] -> t
