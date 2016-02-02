@@ -1,4 +1,4 @@
 let x = 10
 
-{ if else }
+/* css style comments */
 let a = if x = 10 then 100 else x * x

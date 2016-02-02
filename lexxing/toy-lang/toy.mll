@@ -28,16 +28,17 @@ rule toy_lang =
         printf "operator: %c\n" op;
         toy_lang lexbuf
     }
-    | '{' [^ '\n']* '}' as comment{ 
-        printf "comment: %s\n" comment;
-        toy_lang lexbuf; 
-    } (* eat up one line comment *)
+    | "/*" { comment lexbuf; } (* ignoring comments *)
     | [' ' '\t' '\n'] { toy_lang lexbuf; } (* eat up whitespace *)
     | _ as c { 
         printf "Unrecognized character: %c\n" c;
         toy_lang lexbuf
     }
     | eof {}
+and comment = 
+    parse
+    | "*/" { toy_lang lexbuf }
+    | _    { comment lexbuf }
 
 {
     let main () = 
