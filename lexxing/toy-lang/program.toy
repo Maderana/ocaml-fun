@@ -1,1 +1,4 @@
-if x = 10 then true else false
+let x = 10
+
+{ if else }
+let a = if x = 10 then 100 else x * x

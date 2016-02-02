@@ -28,7 +28,10 @@ rule toy_lang =
         printf "operator: %c\n" op;
         toy_lang lexbuf
     }
-    | '{' [^ '\n']* '}' { toy_lang lexbuf; } (* eat up one line comment *)
+    | '{' [^ '\n']* '}' as comment{ 
+        printf "comment: %s\n" comment;
+        toy_lang lexbuf; 
+    } (* eat up one line comment *)
     | [' ' '\t' '\n'] { toy_lang lexbuf; } (* eat up whitespace *)
     | _ as c { 
         printf "Unrecognized character: %c\n" c;
@@ -38,6 +41,8 @@ rule toy_lang =
 
 {
     let main () = 
+        (* checks for a file as the first argument
+         * else defaults to stdin *)
         let cin = 
             if Array.length Sys.argv > 1
             then open_in Sys.argv.(1)

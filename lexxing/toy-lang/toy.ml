@@ -460,41 +460,51 @@ let
 # 461 "toy.ml"
 
   | 5 ->
+let
 # 31 "toy.mll"
-                        ( toy_lang lexbuf; )
-# 466 "toy.ml"
+                           comment
+# 467 "toy.ml"
+= Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
+# 31 "toy.mll"
+                                  ( 
+        printf "comment: %s\n" comment;
+        toy_lang lexbuf; 
+    )
+# 474 "toy.ml"
 
   | 6 ->
-# 32 "toy.mll"
+# 35 "toy.mll"
                       ( toy_lang lexbuf; )
-# 471 "toy.ml"
+# 479 "toy.ml"
 
   | 7 ->
 let
-# 33 "toy.mll"
+# 36 "toy.mll"
            c
-# 477 "toy.ml"
+# 485 "toy.ml"
 = Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
-# 33 "toy.mll"
+# 36 "toy.mll"
              ( 
         printf "Unrecognized character: %c\n" c;
         toy_lang lexbuf
     )
-# 484 "toy.ml"
+# 492 "toy.ml"
 
   | 8 ->
-# 37 "toy.mll"
+# 40 "toy.mll"
           ()
-# 489 "toy.ml"
+# 497 "toy.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf; 
       __ocaml_lex_toy_lang_rec lexbuf __ocaml_lex_state
 
 ;;
 
-# 39 "toy.mll"
+# 42 "toy.mll"
  
     let main () = 
+        (* checks for a file as the first argument
+         * else defaults to stdin *)
         let cin = 
             if Array.length Sys.argv > 1
             then open_in Sys.argv.(1)
@@ -507,4 +517,4 @@ let
     main ();;
 
 
-# 511 "toy.ml"
+# 521 "toy.ml"
