@@ -1,6 +1,5 @@
 { open Parser }
 
-
 let ws = [' ' '\t' '\r' '\n']
 let digit = ['0'-'9']
 let ident = ['a'-'z']
