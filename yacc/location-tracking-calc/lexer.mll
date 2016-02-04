@@ -1,5 +1,12 @@
 {
     open Parser (* assumes the parser file is "parser.mly" *)
+    open Lexing
+    let incr_lineno lexbuf = 
+        let pos = lexbuf.lex_curr_p in
+        lexbuf.lex_curr_p <- { pos with
+            pos_lnum = pos.pos_lnum + 1;
+            pos_bol = pos.pos_cnum;
+        }
 }
 
 let ws = [' ' '\t' '\r']
@@ -11,7 +18,7 @@ let break = [';'][';']
 rule token = 
     parse 
     | ws                       { token lexbuf }
-    | '\n'                     { NEWLINE }
+    | '\n'                     { incr_lineno lexbuf; NEWLINE }
     | digit+ | '.' digit+
     | digit+ '.' digit* as num { NUM (float_of_string num) }
     | '+'                      { PLUS }
