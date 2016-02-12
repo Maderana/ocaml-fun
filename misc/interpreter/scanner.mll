@@ -16,7 +16,7 @@ rule token =
     | '='           { EQUALS }
     | '^'           { POWER }
     | break         { EOF}
-    | ';'           { SEP }
+    | ','           { SEP }
     | digits as lit { LITERAL(int_of_string lit) }
     | letter as lit { VARIABLE(int_of_char lit - 97) }
     | eof           { EOF }
