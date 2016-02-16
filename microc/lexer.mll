@@ -23,8 +23,8 @@ rule token = parse
     | "<="                          { LTE }
     | ">="                          { GTE }
     | '='                           { ASSIGN }
-    | "=="                          { EQUALS }
-    | "!="                          { NOTEQUALS }
+    | "=="                          { EQ }
+    | "!="                          { NEQ }
     | '-'                           { MINUS }
     | '+'                           { PLUS }
     | '*'                           { MULTIPLY }
