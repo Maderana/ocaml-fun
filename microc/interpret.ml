@@ -12,7 +12,6 @@ type env = vsymtable * vsymtable;;
 (* used to handle the return statement; value * global vars *)
 exception ReturnException of int * vsymtable;;
 
-
 let run ((vars, funcs): program) : unit = 
   (* build up a list of func decls *)
   let func_decls : (func_decl NameMap.t) = 
@@ -23,9 +22,8 @@ let run ((vars, funcs): program) : unit =
   (* invoke a function and return an updated global symbol table *)
   let rec call (fdecl: func_decl) (actuals: int list) (globals: vsymtable) : vsymtable = 
 
-
     (* evaluate expressions *)
-    let rec eval (env: env) (exp: exp) : int * env = match exp with
+    let rec eval (env: env) (exp: expr) : int * env = match exp with
       | Literal(i) -> i, env
       | Noexpr -> 1, env
       | Call("print", [e]) -> 
@@ -77,9 +75,28 @@ let run ((vars, funcs): program) : unit =
           ReturnException (v, globals) -> v, (locals, globals)
     in
 
-
-               
-
-
-
+    (* execute a statement and return an updated environment *)
+    let rec exec env = function
+      | Block(stmts) -> List.fold_left exec env stmts 
+      | Expr(e) -> let _, env = eval env e in env 
+      | If(e, s1, s2) -> let v, env = eval env e in
+        exec env (if v != 0 then s1 else s2)
+      | While(e, s) -> 
+        let rec loop env = 
+          let v, env = eval env e in 
+          if v != 0 then loop (exec env v) else env
+        in loop env
+      | For(e1, e2, e3, s) ->
+        let _, env = eval env e1 in
+        let rec loop env =
+          let v, env = eval env e2 in
+          if v != 0  (* true *)
+          then let _, env = eval (exec env v) e3 in
+            loop env 
+          else
+            env
+        in loop env
+      | Return(e) -> let v, (locals, globals) = eval env e in
+        raise (ReturnException(e, globals))
+    in
 
