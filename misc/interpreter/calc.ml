@@ -19,8 +19,8 @@ let rec eval table = function
     | Pow -> pow l r)
   | Var v -> table.(v)
   | Asn (i, e) -> 
-    Array.set table i (eval table e);
-    eval table e
+    let v = eval table e in
+    Array.set table i v; v
   | Seq (e1, e2) -> 
     let _ = eval table e1 in
     eval table e2
