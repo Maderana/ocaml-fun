@@ -1,6 +1,6 @@
 (* The Abstract Syntax Tree for the MicroC language *)
 
-type op = PLUS | MINUS | MULTIPLY | DIVIDE | GT | LT | GTE | LTE | NOTEQUALS | EQUALS
+type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq
 
 type expr =
   | Literal of int                   (* 10                           *)

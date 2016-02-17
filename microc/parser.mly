@@ -1,7 +1,5 @@
 %{ open Ast %}
 
-/* OCamlyacc Declarations */
-
 /* token definitions */
 %token LBRACE RBRACE COMMA SEMICOLON LPAREN RPAREN 
 %token PLUS MINUS MULTIPLY DIVIDE NEQ EQ
@@ -41,11 +39,13 @@ decls:
 
 /* a function declaration */
 fdecl:
-    ID LPAREN formal_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
-    {{fname = $1;           /* string */
-      formals = $3;         /* list of strings */
-      locals = List.rev $6; /* list of strings */
-      body = List.rev $7}}  /* list of statements */
+    ID LPAREN formal_opt RPAREN LBRACE vdecl_list stmt_list RBRACE {
+        { fname = $1;
+          formals = $3;
+          locals = $6;
+          body = List.rev $7; }
+    }
+
 
 /* either a blank or list of formal list of args */
 formal_opt:
