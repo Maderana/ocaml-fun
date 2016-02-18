@@ -12,30 +12,40 @@ type env = vsymtable * vsymtable;;
 (* used to handle the return statement; value * global vars *)
 exception ReturnException of int * vsymtable;;
 
+(* the function that starts the execution. takes variables
+   and function decls as input*)
 let run ((vars, funcs): program) : unit = 
-  (* build up a list of func decls *)
+
+  (* Step 1: build up a list of func decls. 
+     This gives a map of func name -> func decl record *)
   let func_decls : (func_decl NameMap.t) = 
     List.fold_left (fun funcs fdecl -> NameMap.add fdecl.fname fdecl funcs)
       NameMap.empty funcs
   in
 
-  (* invoke a function and return an updated global symbol table *)
+  (* This is how a function defined in the program gets called. It takes three 
+     arguments: the function decl record, the list of actuals (all evaluated) and 
+     a symbol table representing the global variables. 
+     A function call finally returns an updated symbol table that refers to the new 
+     global variables *)
   let rec call (fdecl: func_decl) (actuals: int list) (globals: vsymtable) : vsymtable = 
 
-    (* evaluate expressions *)
+    (* Expressiosn are evaluated in an environment context -i.e. a pair of local and global
+       vars. The final output of each expression is an int (the only defined type in our 
+       language) and a new environment *)
     let rec eval (env: env) (exp: expr) : int * env = match exp with
-      | Literal(i) -> i, env
-      | Noexpr -> 1, env
-      | Call("print", [e]) -> 
-        let v, env = eval env e in print_endline (string_of_int v); 0, env
-      | Id(var) -> 
-        let locals, globals = env in
+      | Literal(i) -> i, env                                                (* return i, no change in env *)
+      | Noexpr -> 1, env                                                    (* return 1, no change in env. the 1 here carries no meaning *)
+      | Call("print", [e]) ->                                               (* handle the print function differently. just takes one arg e *)
+        let v, env = eval env e in print_endline (string_of_int v); 
+        0, env
+      | Id(var) -> (let locals, globals = env in                            (* look for the var first in locals, then in globals *)
         if NameMap.mem var locals
         then (NameMap.find var locals), env
-        else if NameMap.mem var globals, env
+        else if NameMap.mem var globals
         then (NameMap.find var globals), env
-        else raise (failwith "Undeclared identifier : " ^ var)
-      | Binop(e1, op, e2) ->
+        else raise (failwith "Undeclared identifier : " ^ var))             (* raise exception if not found anywhere *)
+      | Binop(e1, op, e2) ->                                                (* eval a binary operation. simple stuff *)
         let v1, env = eval env e1 and v2, env = eval env e2 in
         let boolean i = if i then 1 else 0 in
         (match op with
@@ -48,14 +58,14 @@ let run ((vars, funcs): program) : unit =
          | Gte -> boolean(v1 >= v2)
          | Gt  -> boolean(v1 > v2)
          | Lte -> boolean(v1 <= v2)
-         | Lt  -> boolean(v1 < v2)
-         | Assign (var , e) ->
+         | Lt  -> boolean(v1 < v2))
+      | Assign (var , e) ->
            let v, (locals, globals) = eval env e in
            if NameMap.mem var locals 
            then v, (NameMap.add var v locals, globals)
            else if NameMap.mem var globals
            then v, (locals, NameMap.add var v globals)
-           else raise (failwith "undeclared identifier: " ^ var))
+           else raise (failwith "undeclared identifier: " ^ var)
       | Call(f, actuals) ->
         let fdecl = 
           try NameMap.find f func_decls 
@@ -122,10 +132,3 @@ let run ((vars, funcs): program) : unit =
   try call (NameMap.find "main" func_decls) [] globals
   with Not_found -> raise (failwith "did not find the main() function")
 ;;
-
-
-
-
-
-
-
