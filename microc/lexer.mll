@@ -1,8 +1,4 @@
-(* a Lexer for the microC language *)
-{ 
-    (* assumes the parser is parser.mly file *)
-    open Parser 
-}
+{ open Parser }
 
 let ws = [' ' '\t' '\r' '\n']
 let digit = ['0'-'9']
@@ -12,10 +8,10 @@ let ident_num = ['a'-'z' 'A'-'Z' '0'-'9' '_']
 rule token = parse 
     | ws                            { token lexbuf }
     | "/*"                          { comment lexbuf }
+    | '('                           { LPAREN }
+    | ')'                           { RPAREN }
     | '{'                           { LBRACE }
     | '}'                           { RBRACE }
-    | '('                           { RPAREN }
-    | ')'                           { LPAREN }
     | ';'                           { SEMICOLON }
     | ','                           { COMMA }
     | '>'                           { GT }

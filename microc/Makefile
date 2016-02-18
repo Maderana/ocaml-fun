@@ -5,6 +5,9 @@ all:
 	ocamllex lexer.mll
 	ocamlc -c lexer.ml
 	ocamlc -c parser.ml
-	#ocamlc -c main.ml
-	#ocamlc -o calc lexer.cmo parser.cmo main.cmo
-	#rm parser.mli lexer.ml parser.ml
+	ocamlc -c interpret.ml
+	ocamlc -o microc.out lexer.cmo parser.cmo interpret.cmo
+
+clean:
+	rm *.cmo *.cmi
+	rm parser.mli lexer.ml parser.ml
