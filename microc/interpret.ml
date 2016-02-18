@@ -100,3 +100,32 @@ let run ((vars, funcs): program) : unit =
         raise (ReturnException(e, globals))
     in
 
+    (* enter the function: bind actual values to formal arguments *)
+    let locals =
+      try List.fold_left2
+        (fun locals formal actual -> NameMap.add formal actual locals)
+        NameMap.empty fdecl.formals actuals
+      with Invalid_argument(_) -> 
+        raise (failwith("wrong number of arguments passed to " ^ fdecl.fname))
+    in
+    (* initialize local variables to 0 *)
+    let locals = List.fold_left
+        (fun locals local -> NameMap.add local 0 locals) 
+        locals fdecl.locals
+    in
+    (* execute each statement in sequence, return updated global symbol table *)
+    snd (List.fold_left exec (locals, globals) fdecl.body)
+  in
+  let globals = List.fold_left 
+   (fun globals vdecl -> NameMap.add vdecl 0 globals) NameMap.empty vars
+  in 
+  try call (NameMap.find "main" func_decls) [] globals
+  with Not_found -> raise (failwith "did not find the main() function")
+;;
+
+
+
+
+
+
+
