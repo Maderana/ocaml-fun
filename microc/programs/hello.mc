@@ -1,3 +1,3 @@
 main() {
-    print(4 + 10 * 3 / 2);
+    return print(4 + 10 * 3 / 2);
 }

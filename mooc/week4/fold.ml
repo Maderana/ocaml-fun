@@ -30,20 +30,20 @@ let first10 = range 10;;
 
 filter iseven first10;;
 
-let partition p l = 
-  List.fold_right 
-    (fun x (lpos, lneg) -> 
-       if p x 
+let partition p l =
+  List.fold_right
+    (fun x (lpos, lneg) ->
+       if p x
        then ((x :: lpos), lneg)
-       else (lpos, (x :: lneg))) 
+       else (lpos, (x :: lneg)))
     l ([], [])
 ;;
 
 partition iseven first10;;
 
-let rec quicksort = function 
+let rec quicksort = function
   | [] -> []
-  | x :: xs -> 
+  | x :: xs ->
     let l = quicksort (filter (fun y -> y < x) xs) in
     let g = quicksort (filter (fun y -> y > x) xs) in
     l @ (x :: g)
